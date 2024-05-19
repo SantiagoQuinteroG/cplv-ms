@@ -10,6 +10,7 @@ import { SurveyModule } from './survey/survey.module';
 import { TeamsModule } from './teams/teams.module';
 import { TypedocsModule } from './typedocs/typedocs.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     SurveyModule,
     TeamsModule,
     TypedocsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
