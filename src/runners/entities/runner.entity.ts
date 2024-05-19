@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,18 +15,16 @@ import { TypedocEntity } from '../../typedocs/entities/typedoc.entity';
 @Entity('runners')
 export class RunnerEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  runnerId: number;
 
   @OneToOne(() => UserEntity, (user) => user.userId)
   @JoinColumn()
   userId: UserEntity;
 
-  @OneToOne(() => TeamEntity, (team) => team.teamId)
-  @JoinColumn()
-  teamId: TeamEntity;
+  @ManyToOne(() => TeamEntity, (team) => team.runner)
+  team: TeamEntity;
 
-  @OneToOne(() => TypedocEntity, (typedoc) => typedoc.typeId)
-  @JoinColumn()
+  @ManyToOne(() => TypedocEntity, (typedoc) => typedoc.runner)
   typedoc: TypedocEntity;
 
   @Column({ unique: true })

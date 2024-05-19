@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SurveyService } from './survey.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { UpdateSurveyDto } from './dto/update-survey.dto';
@@ -8,27 +16,30 @@ export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
 
   @Post()
-  create(@Body() createSurveyDto: CreateSurveyDto) {
-    return this.surveyService.create(createSurveyDto);
+  createSurvey(@Body() createSurveyDto: CreateSurveyDto) {
+    return this.surveyService.createSurvey(createSurveyDto);
   }
 
   @Get()
-  findAll() {
-    return this.surveyService.findAll();
+  findAllSurvey() {
+    return this.surveyService.findAllSurvey();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.surveyService.findOne(+id);
+  findOneSurvey(@Param('id') id: string) {
+    return this.surveyService.findOneSurvey(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSurveyDto: UpdateSurveyDto) {
-    return this.surveyService.update(+id, updateSurveyDto);
+  updateSurvey(
+    @Param('id') id: string,
+    @Body() updateSurveyDto: UpdateSurveyDto,
+  ) {
+    return this.surveyService.updateSurvey(+id, updateSurveyDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.surveyService.remove(+id);
+  removeSurvey(@Param('id') id: string) {
+    return this.surveyService.removeSurvey(+id);
   }
 }

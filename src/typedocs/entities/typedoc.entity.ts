@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { RunnerEntity } from '../../runners/entities/runner.entity';
 
 @Entity('typedocs')
 export class TypedocEntity {
@@ -12,7 +14,10 @@ export class TypedocEntity {
   typeId: number;
 
   @Column()
-  name: number;
+  name: string;
+
+  @OneToMany(() => RunnerEntity, (runner) => runner.typedoc)
+  runner: RunnerEntity;
 
   @CreateDateColumn()
   createdAt: Date;
