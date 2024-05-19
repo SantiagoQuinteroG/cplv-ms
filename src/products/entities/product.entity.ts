@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { EntryEntity } from '../../payments/entities/entries.entity';
 
 @Entity('products')
 export class ProductEntity {
@@ -25,6 +27,9 @@ export class ProductEntity {
 
   @Column({ nullable: true })
   size: string;
+
+  @OneToMany(() => EntryEntity, (entry) => entry.product)
+  entries: EntryEntity;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,9 +1,8 @@
 import {
   CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,9 +17,8 @@ export class OrderEntity {
   @OneToMany(() => EntryEntity, (entry) => entry.order)
   entries: EntryEntity[];
 
-  @OneToOne(() => UserEntity, (user) => user.userId)
-  @JoinColumn()
-  userId: UserEntity;
+  @ManyToOne(() => UserEntity, (user) => user.orders)
+  user: UserEntity;
 
   @CreateDateColumn()
   createdAt: Date;

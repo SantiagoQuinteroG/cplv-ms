@@ -1,10 +1,11 @@
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import {OrderEntity} from "../../payments/entities/orders.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -25,6 +26,9 @@ export class UserEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => OrderEntity, (orders) => orders.user)
+  orders: OrderEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

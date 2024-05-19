@@ -19,9 +19,8 @@ export class EntryEntity {
   @ManyToOne(() => OrderEntity, (order) => order.entries)
   order: OrderEntity;
 
-  @OneToOne(() => ProductEntity, (product) => product.productId)
-  @JoinColumn()
-  productId: ProductEntity;
+  @ManyToOne(() => ProductEntity, (product) => product.entries)
+  product: ProductEntity;
 
   @Column()
   amount: number;

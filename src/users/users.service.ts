@@ -20,12 +20,15 @@ export class UsersService {
   }
 
   findAllUser() {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: ['orders'],
+    });
   }
 
   findOneUser(userId: string) {
     return this.userRepository.findOne({
       where: { userId },
+      relations: ['orders'],
     });
   }
 

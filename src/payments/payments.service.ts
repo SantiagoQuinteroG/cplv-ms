@@ -34,7 +34,7 @@ export class PaymentsService {
 
     const newOrder = this.orderRepository.create(createOrderDto);
     const savedOrder = await this.orderRepository.save(newOrder);
-    savedOrder.userId = userFound;
+    savedOrder.user = userFound;
 
     return this.orderRepository.save(savedOrder);
   }
@@ -62,7 +62,7 @@ export class PaymentsService {
 
     const newEntry = await this.entryRepository.save(createEntryDto);
     const savedEntry = await this.entryRepository.save(newEntry);
-    savedEntry.productId = productFound;
+    savedEntry.product = productFound;
     savedEntry.order = orderFound;
 
     return this.entryRepository.save(savedEntry);
