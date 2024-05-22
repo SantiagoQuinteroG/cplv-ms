@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateRunnerDto } from './dto/create-runner.dto';
+import { RequestRunnerTeamDto } from './dto/create-runner.dto';
 import { UpdateRunnerDto } from './dto/update-runner.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,6 +7,7 @@ import { RunnerEntity } from './entities/runner.entity';
 import { UserEntity } from '../users/entities/user.entity';
 import { TeamEntity } from '../teams/entities/team.entity';
 import { TypedocEntity } from '../typedocs/entities/typedoc.entity';
+import { RequestRunnerDto } from './dto/create-runner.dto';
 
 @Injectable()
 export class RunnersService {
@@ -21,68 +22,59 @@ export class RunnersService {
     private readonly typedocRepository: Repository<TypedocEntity>,
   ) {}
 
-  async createRunnerNoTeam(
-    userId: string,
-    typeId: number,
-    createRunnerDto: CreateRunnerDto,
-  ) {
-    const userFound = await this.userRepository.findOne({
-      where: { userId },
+  async createRunnerNoTeam(requestRunnerDto: RequestRunnerDto) {
+    const userFound = await this.userRepository.findOneBy({
+      userId: requestRunnerDto.userId,
     });
 
     if (!userFound) {
       throw new NotFoundException();
     }
 
-    const typedocFound = await this.typedocRepository.findOne({
-      where: { typeId },
+    const typedocFound = await this.typedocRepository.findOneBy({
+      typeId: Number(requestRunnerDto.typeId),
     });
 
     if (!typedocFound) {
       throw new NotFoundException();
     }
 
-    const newRunner = this.runnerRepository.create(createRunnerDto);
+    const newRunner = this.runnerRepository.create(requestRunnerDto);
     const savedRunner = await this.runnerRepository.save(newRunner);
-    savedRunner.userId = userFound;
+    savedRunner.user = userFound;
     savedRunner.typedoc = typedocFound;
 
     return this.runnerRepository.save(savedRunner);
   }
 
-  async createRunnerWithTeam(
-    userId: string,
-    typeId: number,
-    teamId: number,
-    createRunnerDto: CreateRunnerDto,
-  ) {
-    const userFound = await this.userRepository.findOne({
-      where: { userId },
+  async createRunnerWithTeam(requestRunnerTeamDto: RequestRunnerTeamDto) {
+    const userFound = await this.userRepository.findOneBy({
+      userId: requestRunnerTeamDto.userId,
     });
 
     if (!userFound) {
       throw new NotFoundException();
     }
 
-    const typedocFound = await this.typedocRepository.findOne({
-      where: { typeId },
+    const typedocFound = await this.typedocRepository.findOneBy({
+      typeId: Number(requestRunnerTeamDto.typeId),
     });
 
     if (!typedocFound) {
       throw new NotFoundException();
     }
 
-    const teamFound = await this.teamRepository.findOne({
-      where: { teamId },
+    const teamFound = await this.teamRepository.findOneBy({
+      teamId: Number(requestRunnerTeamDto.teamId),
     });
 
     if (!teamFound) {
       throw new NotFoundException();
     }
 
-    const newRunner = this.runnerRepository.create(createRunnerDto);
+    const newRunner = this.runnerRepository.create(requestRunnerTeamDto);
     const savedRunner = await this.runnerRepository.save(newRunner);
-    savedRunner.userId = userFound;
+    savedRunner.user = userFound;
     savedRunner.typedoc = typedocFound;
     savedRunner.team = teamFound;
 
@@ -103,7 +95,7 @@ export class RunnersService {
   }
 
   updateRunner(id: number, updateRunnerDto: UpdateRunnerDto) {
-    return `This action updates a #${id} runner`;
+    return this.runnerRepository.update(id, updateRunnerDto);
   }
 
   removeRunner(id: number) {

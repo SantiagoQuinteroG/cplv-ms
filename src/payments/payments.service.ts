@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { UpdateEntryDto } from './dto/update-entry.dto';
@@ -23,37 +22,32 @@ export class PaymentsService {
     private readonly productRepository: Repository<ProductEntity>,
   ) {}
 
-  async createOrder(userId: string, createOrderDto: CreateOrderDto) {
-    const userFound = await this.userRepository.findOne({
-      where: { userId },
+  async createOrder(userId: string) {
+    const userFound = await this.userRepository.findOneBy({
+      userId: userId,
     });
 
     if (!userFound) {
       throw new NotFoundException();
     }
 
-    const newOrder = this.orderRepository.create(createOrderDto);
-    const savedOrder = await this.orderRepository.save(newOrder);
-    savedOrder.user = userFound;
+    const newOrder = this.orderRepository.create();
+    newOrder.user = userFound;
 
-    return this.orderRepository.save(savedOrder);
+    return this.orderRepository.save(newOrder);
   }
 
-  async createEntry(
-    orderId: number,
-    productId: number,
-    createEntryDto: CreateEntryDto,
-  ) {
-    const productFound = await this.productRepository.findOne({
-      where: { productId },
+  async createEntry(createEntryDto: CreateEntryDto) {
+    const productFound = await this.productRepository.findOneBy({
+      productId: createEntryDto.productId,
     });
 
     if (!productFound) {
       throw new NotFoundException();
     }
 
-    const orderFound = await this.orderRepository.findOne({
-      where: { orderId },
+    const orderFound = await this.orderRepository.findOneBy({
+      orderId: createEntryDto.orderId,
     });
 
     if (!orderFound) {
@@ -70,14 +64,14 @@ export class PaymentsService {
 
   findAllOrder() {
     return this.orderRepository.find({
-      relations: ['userId', 'entries'],
+      relations: ['user', 'entries'],
     });
   }
 
   findOneOrder(orderId: number) {
     return this.orderRepository.findOne({
       where: { orderId },
-      relations: ['userId', 'entries'],
+      relations: ['user', 'entries'],
     });
   }
 

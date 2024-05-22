@@ -11,6 +11,7 @@ import { TeamsModule } from './teams/teams.module';
 import { TypedocsModule } from './typedocs/typedocs.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -43,7 +44,7 @@ import { AuthModule } from './auth/auth.module';
     TypedocsModule,
     AuthModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}

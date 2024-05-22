@@ -8,39 +8,22 @@ import {
   Delete,
 } from '@nestjs/common';
 import { RunnersService } from './runners.service';
-import { CreateRunnerDto } from './dto/create-runner.dto';
+import { RequestRunnerDto } from './dto/create-runner.dto';
+import { RequestRunnerTeamDto } from './dto/create-runner.dto';
 import { UpdateRunnerDto } from './dto/update-runner.dto';
 
 @Controller('runners')
 export class RunnersController {
   constructor(private readonly runnersService: RunnersService) {}
 
-  @Post(':userId/:typeId')
-  createRunnerNoTeam(
-    @Param('userId') userId: string,
-    @Param('typeId') typeId: string,
-    @Body() createRunnerDto: CreateRunnerDto,
-  ) {
-    return this.runnersService.createRunnerNoTeam(
-      userId,
-      +typeId,
-      createRunnerDto,
-    );
+  @Post('noteam')
+  createRunnerNoTeam(@Body() requestRunnerDto: RequestRunnerDto) {
+    return this.runnersService.createRunnerNoTeam(requestRunnerDto);
   }
 
-  @Post(':userId/:typeId/:teamId')
-  createRunnerWithTeam(
-    @Param('userId') userId: string,
-    @Param('typeId') typeId: string,
-    @Param('teamId') teamId: string,
-    @Body() createRunnerDto: CreateRunnerDto,
-  ) {
-    return this.runnersService.createRunnerWithTeam(
-      userId,
-      +typeId,
-      +teamId,
-      createRunnerDto,
-    );
+  @Post('withteam')
+  createRunnerWithTeam(@Body() requestRunnerTeamDto: RequestRunnerTeamDto) {
+    return this.runnersService.createRunnerWithTeam(requestRunnerTeamDto);
   }
 
   @Get()

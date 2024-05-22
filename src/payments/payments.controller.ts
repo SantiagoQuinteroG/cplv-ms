@@ -8,7 +8,6 @@ import {
   Delete,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { UpdateEntryDto } from './dto/update-entry.dto';
@@ -17,25 +16,14 @@ import { UpdateEntryDto } from './dto/update-entry.dto';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
-  @Post('order/:userId')
-  createOrder(
-    @Param('userId') userId: string,
-    @Body() createOrderDto: CreateOrderDto,
-  ) {
-    return this.paymentsService.createOrder(userId, createOrderDto);
+  @Post('order')
+  createOrder(@Body('userId') userId: string) {
+    return this.paymentsService.createOrder(userId);
   }
 
-  @Post('entry/:orderId/:productId')
-  createEntry(
-    @Param('orderId') orderId: string,
-    @Param('productId') productId: string,
-    @Body() createEntryDto: CreateEntryDto,
-  ) {
-    return this.paymentsService.createEntry(
-      +orderId,
-      +productId,
-      createEntryDto,
-    );
+  @Post('entry')
+  createEntry(@Body() createEntryDto: CreateEntryDto) {
+    return this.paymentsService.createEntry(createEntryDto);
   }
 
   @Get('order')

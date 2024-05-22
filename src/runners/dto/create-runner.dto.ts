@@ -1,9 +1,8 @@
-import { IsDate, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
-export class CreateRunnerDto {
+export class RequestRunnerDto {
   @IsString()
   docNumber: string;
-  @IsDate()
   birthday: Date;
   @IsString()
   gender: string;
@@ -19,4 +18,13 @@ export class CreateRunnerDto {
   eps: string;
   @IsString()
   rh: string;
+  @IsString()
+  userId: string;
+  @IsString()
+  typeId: string;
+}
+
+export class RequestRunnerTeamDto extends RequestRunnerDto {
+  @IsString()
+  teamId: string;
 }

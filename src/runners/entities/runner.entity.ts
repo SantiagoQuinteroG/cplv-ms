@@ -19,7 +19,7 @@ export class RunnerEntity {
 
   @OneToOne(() => UserEntity, (user) => user.userId)
   @JoinColumn()
-  userId: UserEntity;
+  user: UserEntity;
 
   @ManyToOne(() => TeamEntity, (team) => team.runner)
   team: TeamEntity;
