@@ -3,10 +3,12 @@ import { TeamsService } from './teams.service';
 import { TeamsController } from './teams.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeamEntity } from './entities/team.entity';
+import { JwtStrategy } from '../strategies/jwt.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TeamEntity])],
+  imports: [PassportModule, TypeOrmModule.forFeature([TeamEntity])],
   controllers: [TeamsController],
-  providers: [TeamsService],
+  providers: [TeamsService, JwtStrategy],
 })
 export class TeamsModule {}

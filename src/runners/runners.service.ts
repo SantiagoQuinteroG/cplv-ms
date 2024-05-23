@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { RequestRunnerTeamDto } from './dto/create-runner.dto';
 import { UpdateRunnerDto } from './dto/update-runner.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -70,6 +74,22 @@ export class RunnersService {
 
     if (!teamFound) {
       throw new NotFoundException();
+    }
+
+    const teams = await this.runnerRepository.find({
+      where: {
+        team: { teamId: Number(requestRunnerTeamDto.teamId) },
+      },
+    });
+
+    let teamCount = 0;
+
+    teams.forEach(() => {
+      teamCount++;
+    });
+
+    if (teamCount >= 5) {
+      throw new ForbiddenException('Team is full');
     }
 
     const newRunner = this.runnerRepository.create(requestRunnerTeamDto);

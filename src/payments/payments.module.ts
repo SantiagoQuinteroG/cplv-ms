@@ -6,6 +6,8 @@ import { EntryEntity } from './entities/entries.entity';
 import { OrderEntity } from './entities/orders.entity';
 import { ProductEntity } from '../products/entities/product.entity';
 import { UserEntity } from '../users/entities/user.entity';
+import { JwtStrategy } from '../strategies/jwt.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -14,9 +16,10 @@ import { UserEntity } from '../users/entities/user.entity';
       OrderEntity,
       ProductEntity,
       UserEntity,
+      PassportModule,
     ]),
   ],
   controllers: [PaymentsController],
-  providers: [PaymentsService],
+  providers: [PaymentsService, JwtStrategy],
 })
 export class PaymentsModule {}

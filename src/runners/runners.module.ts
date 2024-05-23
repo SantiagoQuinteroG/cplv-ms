@@ -6,6 +6,8 @@ import { RunnerEntity } from './entities/runner.entity';
 import { UserEntity } from '../users/entities/user.entity';
 import { TypedocEntity } from '../typedocs/entities/typedoc.entity';
 import { TeamEntity } from '../teams/entities/team.entity';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from '../strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -14,9 +16,10 @@ import { TeamEntity } from '../teams/entities/team.entity';
       UserEntity,
       TypedocEntity,
       TeamEntity,
+      PassportModule,
     ]),
   ],
   controllers: [RunnersController],
-  providers: [RunnersService],
+  providers: [RunnersService, JwtStrategy],
 })
 export class RunnersModule {}

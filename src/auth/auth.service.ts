@@ -26,7 +26,9 @@ export class AuthService {
     const compareHashed = await decodePassword(password, foundUser.password);
 
     if (compareHashed) {
-      return this.jwtService.sign({ userId: foundUser.userId });
+      const { password: string, ...userToken } = foundUser;
+      const token = this.jwtService.sign({ userId: foundUser.userId });
+      return { token, userToken };
     } else {
       throw new NotFoundException('Wrong password');
     }
